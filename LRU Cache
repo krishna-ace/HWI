@@ -1,0 +1,31 @@
+import java.util.*;
+
+class LRUCache {
+    private final int capacity;
+    private Map<Integer, Integer> map;
+    private LinkedList<Integer> list;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        map = new HashMap<>();
+        list = new LinkedList<>();
+    }
+
+    public int get(int key) {
+        if (!map.containsKey(key)) return -1;
+        list.remove((Integer) key);
+        list.addFirst(key);
+        return map.get(key);
+    }
+
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            list.remove((Integer) key);
+        } else if (map.size() == capacity) {
+            int last = list.removeLast();
+            map.remove(last);
+        }
+        map.put(key, value);
+        list.addFirst(key);
+    }
+}
